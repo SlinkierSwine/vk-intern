@@ -26,6 +26,10 @@ class ProfileDetail(generics.RetrieveAPIView):
 
 class FriendListAPIView(APIView):
     def get(self, request, profile_id, *args, **kwargs):
-        friends = Profile.objects.get(id=profile_id).friends.all()
-        serializer = ProfileSerializer(friends, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        profile = Profile.objects.filter(id=profile_id).first()
+        if profile:
+            friends = profile.frieds.all()
+            serializer = ProfileSerializer(friends, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "No such profile"}, status=status.HTTP_404_NOT_FOUND)
