@@ -15,3 +15,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['id', "user"]
 
+
+class ProfileCreateSerializer(serializers.Serializer):
+    username = serializers.CharField()
+
+
+class FriendsSerializer(serializers.Serializer):
+    profile_id = serializers.IntegerField()
+    friend_id = serializers.IntegerField()
+
