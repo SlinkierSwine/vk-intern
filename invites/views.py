@@ -37,6 +37,17 @@ class InviteToUserAPIView(APIView):
             return Response({"error": "No such profile"}, status=status.HTTP_404_NOT_FOUND)
 
 
+class RejectInviteAPIView(APIView):
+    def post(self, request, invite_id, *args, **kwargs):
+        invite = Invite.objects.filter(id=invite_id).first()
+        if invite:
+            invite.rejected = True
+            invite.save()
+            return Response(status=status.HTTP_200_OK)
+        
+        return Response({"error": "No such invite"}, status=status.HTTP_404_NOT_FOUND)
+
+
 class InviteUserAPIView(APIView):
     @swagger_auto_schema(
             request_body=InviteCreateSerializer
