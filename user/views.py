@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework.views import APIView, Response, status
+from drf_yasg.utils import swagger_auto_schema
 
 from user.models import Profile
 
@@ -25,6 +26,9 @@ class ProfileDetail(generics.RetrieveAPIView):
 
 
 class ProfileCreateAPIView(APIView):
+    @swagger_auto_schema(
+            request_body=ProfileCreateSerializer
+            )
     def post(self, request, *args, **kwargs):
         serializer = ProfileCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -45,6 +49,9 @@ class FriendListAPIView(APIView):
 
 
 class FriendStatusAPIView(APIView):
+    @swagger_auto_schema(
+            query_serializer=FriendsSerializer
+            )
     def get(self, request, *args, **kwargs):
         serializer = FriendsSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -65,6 +72,9 @@ class FriendStatusAPIView(APIView):
 
 
 class DeleteFriendAPIView(APIView):
+    @swagger_auto_schema(
+            request_body=FriendsSerializer
+            )
     def delete(self, request, *args, **kwargs):
         serializer = FriendsSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

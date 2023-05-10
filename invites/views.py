@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.exceptions import status
 from rest_framework.views import APIView, Response
+from drf_yasg.utils import swagger_auto_schema
 
 from invites.models import Invite
 from invites.serializers import InviteCreateSerializer, InviteSerializer
@@ -37,6 +38,9 @@ class InviteToUserAPIView(APIView):
 
 
 class InviteUserAPIView(APIView):
+    @swagger_auto_schema(
+            request_body=InviteCreateSerializer
+            )
     def post(self, request, *args, **kwargs):
         serializer = InviteCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
